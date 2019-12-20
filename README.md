@@ -37,7 +37,7 @@ See the documentation [Table of Contents](docs/readme.md) for an overview of the
 For the impatient:
 
 ```sh
-git clone --recursive https://github.com/squirrel/squirrel.windows
+git clone --recursive https://github.com/dlipsy/squirrel.windows.ftp
 cd squirrel.windows
 .\.NuGet\NuGet.exe restore
 msbuild /p:Configuration=Release
