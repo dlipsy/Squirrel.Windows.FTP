@@ -33,6 +33,9 @@ Refer to our full list of goals for [integrating, packaging, distributing, insta
 
 See the documentation [Table of Contents](docs/readme.md) for an overview of the available documentation for Squirrel.Windows. It includes a [Getting Started Guide](docs/getting-started/0-overview.md) as well as additional topics related to using Squirrel in your applications. 
 
+## Changes from Squirrel.Windows
+I see a need for certain instances where FTP access should be supported. I forked a current version and incorporated some [changes made](https://github.com/floatas/Squirrel.Windows/pull/1/files) by [floatas](https://github.com/floatas/) with some modifications. 
+
 ## Building Squirrel
 For the impatient:
 
