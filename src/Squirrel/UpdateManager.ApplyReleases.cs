@@ -25,7 +25,7 @@ namespace Squirrel
             public ApplyReleasesImpl(string rootAppDirectory)
             {
                 this.rootAppDirectory = rootAppDirectory;
-            }
+            }   
 
             public async Task<string> ApplyReleases(UpdateInfo updateInfo, bool silentInstall, bool attemptingFullInstall, Action<int> progress = null)
             {

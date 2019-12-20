@@ -34,33 +34,18 @@ namespace Squirrel
 
             progress = progress ?? (s => { });
 
-            var request = (FtpWebRequest)WebRequest.Create(url);
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            request.Credentials = new NetworkCredential(username, password);
-
-            using (var response = (FtpWebResponse)request.GetResponse())
+            try
             {
-                using (var file = new FileStream(targetFile, FileMode.Create))
-                {
-                    using (var reader = response.GetResponseStream())
-                    {
-                        while (true)
-                        {
-                            byte[] buff = new byte[2048];
-                            var read = reader.Read(buff, 0, buff.Length);
-                            if (read == 0)
-                            {
-                                break;
-                            }
-                            file.Write(buff, 0, read);
-                        }
-                    }
-                    file.Close();
-                }
+                WebClient client = new WebClient();
+                client.Credentials = new NetworkCredential(username, password);
+                client.DownloadFile(
+                    new Uri(url), targetFile);
+                this.Log().Info("Downloading file ftp finished: " + (url));
             }
-
-            this.Log().Info("Downloading file ftp finished: " + (url));
+            catch(Exception ex)
+            {
+                this.Log().Error("Exception when downloading file from " + (url) + "\n" + ex.ToString());
+            }
 
             return Task.Delay(0);
         }

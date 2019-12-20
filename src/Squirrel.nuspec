@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.9.2</version>
+    <version>1.9.4</version>
     <authors>dlipsy</authors>
     <owners>Dan Lipsy</owners>
     <licenseUrl>https://github.com/dlipsy/Squirrel.Windows.FTP/blob/master/COPYING</licenseUrl>
