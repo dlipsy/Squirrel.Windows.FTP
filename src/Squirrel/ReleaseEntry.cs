@@ -288,16 +288,54 @@ namespace Squirrel
             return filename.EndsWith("-delta.nupkg", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public static ReleasePackage GetPreviousRelease(IEnumerable<ReleaseEntry> releaseEntries, IReleasePackage package, string targetDir)
+        public static ReleasePackage GetPreviousRelease(IEnumerable<ReleaseEntry> releaseEntries, IReleasePackage package, string targetDir, string prevReleasePath = null, IFullLogger log = null)
         {
-            if (releaseEntries == null || !releaseEntries.Any()) return null;
+            {
+                if (releaseEntries == null || !releaseEntries.Any()) return null;
+                var first = releaseEntries
+                    .Where(x => x.IsDelta == false).Where(x => x.IsDelta == false)
+                    .Where(x => x.Version < package.ToSemanticVersion()).Where(x => x.Version < package.ToSemanticVersion())
+                    .OrderByDescending(x => x.Version).OrderByDescending(x => x.Version)
+                    .Select(x => new ReleasePackage(Path.Combine(targetDir, x.Filename), true))
+                    .FirstOrDefault();	                
 
-            return releaseEntries
-                .Where(x => x.IsDelta == false)
-                .Where(x => x.Version < package.ToSemanticVersion())
-                .OrderByDescending(x => x.Version)
-                .Select(x => new ReleasePackage(Path.Combine(targetDir, x.Filename), true))
-                .FirstOrDefault();
+                if (first != null)
+                {
+                    var prevReleaseFilePath = Path.Combine(targetDir, first.SuggestedReleaseFileName);
+                    if (!File.Exists(prevReleaseFilePath) && !string.IsNullOrEmpty(prevReleasePath))
+                    {
+                        IFileDownloader downloader;
+                        if (Utility.IsHttpUrl(prevReleasePath))
+                        {
+                            downloader = new FileDownloader();
+                        }
+                        else if (Utility.IsFtpUrl(prevReleasePath))
+                        {
+                            downloader = new FtpFileDownloader();
+                        }
+                        else
+                        {
+                            return null;
+                        }
+
+                        try
+                        {
+                            downloader.DownloadFile(Path.Combine(prevReleasePath, first.SuggestedReleaseFileName), prevReleaseFilePath, null);
+                        }
+                        catch (Exception)
+                        {
+                            return null;
+                        }
+                    }
+
+                    if (File.Exists(prevReleaseFilePath))
+                    {
+                        return new ReleasePackage(prevReleaseFilePath, true);
+                    }
+                }
+
+                return null;
+            }
         }
     }
 }
