@@ -22,6 +22,9 @@ namespace Squirrel
 {
     static class Utility
     {
+        static public string FtpUsername { get; set; }
+        static public string FtpPassword { get; set; }
+
         public static string RemoveByteOrderMarkerIfPresent(string content)
         {
             return string.IsNullOrEmpty(content) ? 
@@ -468,6 +471,17 @@ namespace Squirrel
             }
 
             return uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps;
+        }
+
+        public static bool IsFtpUrl(string urlOrPath)
+        {
+            var uri = default(Uri);
+            if (!Uri.TryCreate(urlOrPath, UriKind.Absolute, out uri))
+            {
+                return false;
+            }
+
+            return uri.Scheme == Uri.UriSchemeFtp;
         }
 
         public static Uri AppendPathToUri(Uri uri, string path)
