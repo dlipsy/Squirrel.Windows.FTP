@@ -32,18 +32,27 @@ namespace Squirrel
         public UpdateManager(string urlOrPath, 
             string applicationName = null,
             string rootDirectory = null,
-            IFileDownloader urlDownloader = null)
+            IFileDownloader urlDownloader = null,
+            string ftpUserName = null,
+            string ftpPassword = null)
         {
             Contract.Requires(!String.IsNullOrEmpty(urlOrPath));
             Contract.Requires(!String.IsNullOrEmpty(applicationName));
 
+            if (ftpUserName != null)
+                Utility.FtpUsername = ftpUserName;
+            if (ftpPassword != null)
+                Utility.FtpPassword = ftpPassword;
+
             updateUrlOrPath = urlOrPath;
             this.applicationName = applicationName ?? UpdateManager.getApplicationName();
-            this.urlDownloader = urlDownloader ?? new FileDownloader();
-
-            if (rootDirectory != null) {
-                this.rootAppDirectory = Path.Combine(rootDirectory, this.applicationName);
-                return;
+            if (urlDownloader != null)
+            {
+                this.urlDownloader = urlDownloader;
+            }
+            else
+            {
+                this.urlDownloader = (Utility.IsFtpUrl(urlOrPath) ? (IFileDownloader)new FtpFileDownloader() : new FileDownloader());
             }
 
             this.rootAppDirectory = Path.Combine(rootDirectory ?? GetLocalAppDataDirectory(), this.applicationName);
