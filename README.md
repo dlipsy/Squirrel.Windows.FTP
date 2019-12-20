@@ -40,8 +40,8 @@ I see a need for certain instances where FTP access should be supported. I forke
 For the impatient:
 
 ```sh
-git clone --recursive https://github.com/squirrel/squirrel.windows
-cd squirrel.windows
+git clone --recursive https://github.com/dlipsy/squirrel.windows.ftp
+cd squirrel.windows.ftp
 .\.NuGet\NuGet.exe restore
 msbuild /p:Configuration=Release
 ```
