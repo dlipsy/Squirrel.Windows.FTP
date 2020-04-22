@@ -52,7 +52,7 @@ namespace Squirrel
             }
             else
             {
-                this.urlDownloader = (Utility.IsFtpUrl(urlOrPath) ? (IFileDownloader)new FtpFileDownloader() : new FileDownloader());
+                this.urlDownloader = (Utility.IsFtpUrl(urlOrPath) ? (IFileDownloader)new FtpFileDownloader(ftpUserName, ftpPassword) : new FileDownloader());
             }
 
             this.rootAppDirectory = Path.Combine(rootDirectory ?? GetLocalAppDataDirectory(), this.applicationName);
